@@ -1,0 +1,353 @@
+/* ==========================================================================
+   Dex · Design Tokens
+   --------------------------------------------------------------------------
+   真相源：本文件（视觉 token 的唯一来源；
+          颜色与 Token 架构见本文件后续章节）
+   规则：组件 MUST 只用语义 token（--color-* / --spacing-* / --radius-* /
+        --shadow-* / --text-*），MUST NOT 写死色值。
+   主题：默认暗色；浅色由 :root[data-theme='light'] 覆盖同一组变量名。
+   命名：category-property-variant（CSS 变量形态），对应设计系统里的
+        category.property.variant。
+   ========================================================================== */
+
+@theme {
+  /* ------------------------------------------------------------------------
+     01 · 表面 surface
+     层级越高数字越大 = 越"浮起来"。暗色里越高越亮，浅色里越高越亮（0→2）
+     再往上（3/4）转为"悬浮态灰"，两套主题语义一致。
+
+     2026-09-24（D-31）：全部去蓝调——彩度归零，只靠明度分层。
+     旧值统一锁在 H255 / C0.012–0.02，是「灰里透蓝」的来源；新基准对齐
+     xAI / Grok 的暗色层（canvas #0A0A0A、elevated #1A1A1A 一路中性）。
+     ------------------------------------------------------------------------ */
+  --color-surface-base: oklch(0.145 0 0); /* #0A0A0A */
+  --color-surface-panel: oklch(0.185 0 0); /* #131313 */
+  --color-surface-card: oklch(0.205 0 0); /* #171717 */
+  --color-surface-raised: oklch(0.25 0 0); /* #222222 */
+  --color-surface-overlay: oklch(0.3 0 0); /* #2E2E2E */
+  --color-surface-inset: oklch(0.115 0 0); /* #050505 */
+
+  /* ------------------------------------------------------------------------
+     02 · 边框 border
+     ------------------------------------------------------------------------ */
+  --color-border-subtle: oklch(0.255 0 0); /* #232323 */
+  --color-border-default: oklch(0.335 0 0); /* #373737 */
+  /* 控件描边。基准取最不利表面 surface-raised(#222222)，不是窗口底——按 base 算 0.52
+     就有 3.59:1「达标」，对 raised 却只有 2.74:1（U-12）。0.55 是对 raised 3.26:1 的
+     最小可行值（2026-09-24 由 0.56 微调而来：中性化后 raised 从 0.27 降到 0.25，
+     同一个值反而更宽松）。
+     2026-10-06（D-36）：去框化落地后**控件不再使用本 token**（改由表面分层界定），
+     当前在 styles.css 中零引用。token 保留备用——若日后确需一条可识别的控件边界，
+     它仍是唯一同时满足 WCAG 1.4.11 的选择。MUST NOT 下调：动了这个值或 surface-*
+     的明度，都要重跑 pnpm tokens:contrast。 */
+  --color-border-strong: oklch(0.55 0 0); /* #717171 */
+
+  /* ------------------------------------------------------------------------
+     03 · 文字 text
+     ------------------------------------------------------------------------ */
+  --color-text-primary: oklch(0.965 0 0); /* #F3F3F3 */
+  --color-text-secondary: oklch(0.72 0 0); /* #A4A4A4 */
+  /* tertiary 于 2026-09-23 两次校正：0.58 →(对 base 仅 3.52:1) 0.642 →
+     0.650（0.642 对最亮的 surface-raised 仅 4.49:1，差 0.01 未达 AA）。
+     2026-09-24 去蓝调后取 0.63：对全部 5 个表面 ≥ 4.55:1（raised 为最紧项）。
+     MUST NOT 下调。 */
+  --color-text-tertiary: oklch(0.63 0 0); /* #898989 */
+  --color-text-disabled: oklch(0.45 0 0);
+  --color-text-inverse: oklch(0.145 0 0);
+
+  /* ------------------------------------------------------------------------
+     04 · 强调 accent（界面上唯一的"可操作"信号色）
+     2026-09-24（D-31）：由发灰的淡蓝 #5AA3EC 锐化到 #4A91F8——色相 250 → 258、
+     彩度 0.13 → 0.17，作为暗底上的前景 5.72:1（原 4.9:1 附近），
+     同时保持「暗底上的可读前景」而非「被文字压住的底色」。
+     accent-on 是深色而非白色：0.66 明度下白字只有 3.11:1，不达 AA。
+     ------------------------------------------------------------------------ */
+  --color-accent-primary: oklch(0.66 0.17 258); /* #4A91F8 */
+  --color-accent-hover: oklch(0.72 0.155 258); /* #64A5FF */
+  --color-accent-active: oklch(0.6 0.175 258); /* #347DE6 */
+  --color-accent-on: oklch(0.145 0 0);
+
+  /* ------------------------------------------------------------------------
+     05 · 状态 status
+     running 于 2026-09-23 由 accent 同色拆出（原 oklch 0.72 0.12 250 与
+     accent 几乎不可区分 → 「运行中」与「选中」混淆）。
+     info 与 accent 同源：不另造第二个蓝（同色相 258）。
+     2026-09-24：pending 一并去蓝调；其余状态色保留彩度——它们是留在界面上
+     的少数彩色信号，中性底反而让它们更清楚。
+     ------------------------------------------------------------------------ */
+  --color-status-running: oklch(0.72 0.13 195);
+  --color-status-success: oklch(0.74 0.16 150);
+  --color-status-warning: oklch(0.78 0.14 75);
+  --color-status-failed: oklch(0.68 0.19 25);
+  --color-status-info: oklch(0.66 0.17 258);
+  --color-status-pending: oklch(0.62 0 0);
+
+  /* ------------------------------------------------------------------------
+     06 · 数据可视化 data
+     分类色板。图谱当前不使用（D7 用形状编码类型、状态色编码状态），
+     本组预留给图表；顺序即默认分配顺序，MUST 从 1 开始连续取用。
+     ------------------------------------------------------------------------ */
+  --color-data-1: oklch(0.66 0.17 258);
+  --color-data-2: oklch(0.72 0.13 195);
+  --color-data-3: oklch(0.74 0.16 150);
+  --color-data-4: oklch(0.78 0.14 75);
+  --color-data-5: oklch(0.68 0.19 25);
+  --color-data-6: oklch(0.7 0.15 320);
+
+  /* ------------------------------------------------------------------------
+     07 · 字体族 font family
+     拉丁：Geist（@fontsource-variable/geist，latin / cyrillic / vietnamese 子集）
+     中文：Noto Sans SC 官方可变切片（assets/fonts/noto-sans-sc.css，101 片 /
+          4.31 MiB，100–900 全字重，按 unicode-range 懒加载）
+     末位回退：Microsoft YaHei / system-ui 兜住切片未覆盖的生僻字
+     决策依据：字体族与回退策略
+     ------------------------------------------------------------------------ */
+  --font-sans:
+    'Geist Variable', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif;
+  --font-mono:
+    'Geist Mono Variable', 'Noto Sans SC', 'Cascadia Mono', Consolas, monospace;
+
+  /* ------------------------------------------------------------------------
+     08 · 圆角 radius
+     桌面密集界面，比网页模板少一档、整体更收。
+     ------------------------------------------------------------------------ */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 24px;
+  --radius-full: 9999px;
+
+  /* ------------------------------------------------------------------------
+     09 · 字阶 type scale
+     基准 13px（桌面工具，不是网页的 16px）。见文档第 5 章偏离说明。
+     ------------------------------------------------------------------------ */
+  --text-caption: 10px;
+  --text-caption--line-height: 14px;
+
+  --text-micro: 11px;
+  --text-micro--line-height: 16px;
+
+  --text-body-sm: 12px;
+  --text-body-sm--line-height: 18px;
+
+  --text-body: 13px;
+  --text-body--line-height: 20px;
+
+  --text-body-lg: 14px;
+  --text-body-lg--line-height: 22px;
+
+  --text-heading-sm: 15px;
+  --text-heading-sm--line-height: 22px;
+
+  --text-heading: 17px;
+  --text-heading--line-height: 24px;
+
+  --text-heading-lg: 20px;
+  --text-heading-lg--line-height: 28px;
+
+  --text-display: 26px;
+  --text-display--line-height: 34px;
+
+  --text-display-lg: 34px;
+  --text-display-lg--line-height: 42px;
+
+  /* ------------------------------------------------------------------------
+     10 · 兼容别名（Deprecated · 2026-09-23）
+     旧 token 名保留，值指向新语义 token。styles.css 现有 257 处引用
+     无需改动；新代码 MUST 使用新名。计划移除版本：v0.3。
+     MUST NOT 在别名上做二次定义。
+     ------------------------------------------------------------------------ */
+  --color-surface-0: var(--color-surface-base);
+  --color-surface-1: var(--color-surface-panel);
+  --color-surface-2: var(--color-surface-card);
+  --color-surface-3: var(--color-surface-raised);
+}
+
+/* ==========================================================================
+   非颜色 token（放在 @theme 之外，避免改动 Tailwind 自身的 --spacing /
+   --shadow 尺度导致既有类名行为漂移）
+   ========================================================================== */
+
+:root {
+  color-scheme: dark;
+
+  /* ------------------------------------------------------------------------
+     11 · 间距 spacing（4px 基准；密集界面额外给 2px 半档 --spacing-0-5）
+     ------------------------------------------------------------------------ */
+  --spacing-0: 0px;
+  --spacing-0-5: 2px;
+  --spacing-1: 4px;
+  /* 6px 半档：菜单内边距、chip 内元素间隙实际在用。补它是为了消灭组件里的自由值 6px */
+  --spacing-1-5: 6px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-5: 20px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-10: 40px;
+  --spacing-12: 48px;
+  --spacing-16: 64px;
+  --spacing-20: 80px;
+
+  /* ------------------------------------------------------------------------
+     12 · 字重 / 字距
+     ------------------------------------------------------------------------ */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
+  --tracking-tight: -0.01em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.02em;
+  --tracking-wider: 0.04em;
+  --tracking-widest: 0.1em;
+
+  /* ------------------------------------------------------------------------
+     13 · 阴影 elevation
+     暗色界面里层级主要靠表面明度承载，阴影只用于真正脱离文档流的浮层。
+     ------------------------------------------------------------------------ */
+  --shadow-none: none;
+  --shadow-sm: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-md: 0 8px 24px rgb(0 0 0 / 45%);
+  --shadow-lg: 0 14px 32px rgb(0 0 0 / 35%);
+  --shadow-xl: 0 16px 40px rgb(0 0 0 / 55%);
+
+  /* ------------------------------------------------------------------------
+     14 · 动效 motion
+     数值取自现有实现实际在用的时长（120 / 160 / 220ms + 1.6s 脉冲），
+     不是照抄网页模板。
+     ------------------------------------------------------------------------ */
+  --motion-instant: 0ms;
+  --motion-fast: 120ms;
+  --motion-normal: 160ms;
+  --motion-slow: 220ms;
+  --motion-emphasis: 320ms;
+  --motion-pulse: 1600ms;
+
+  --ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-emphasis: cubic-bezier(0.2, 0, 0, 1.2);
+
+  /* ------------------------------------------------------------------------
+     15 · 焦点环 focus
+     模板第 20 章要求所有交互元素有可见焦点态；此前实现缺失，2026-09-23 补。
+     ------------------------------------------------------------------------ */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  --focus-ring-color: var(--color-accent-primary);
+
+  /* ------------------------------------------------------------------------
+     16 · 层级 z-index
+     ------------------------------------------------------------------------ */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-dropdown: 30;
+  --z-overlay: 40;
+  --z-modal: 50;
+  --z-toast: 60;
+
+  /* ------------------------------------------------------------------------
+     17 · 图标尺寸 icon
+     ------------------------------------------------------------------------ */
+  --icon-xs: 12px;
+  --icon-sm: 14px;
+  --icon-md: 16px;
+  --icon-lg: 20px;
+  --icon-xl: 24px;
+  --icon-2xl: 32px;
+  --icon-3xl: 48px;
+
+  /* ------------------------------------------------------------------------
+     18 · 派生色（由基础色算出，随主题自动跟随，MUST NOT 在组件里重算）
+     ------------------------------------------------------------------------ */
+  --color-accent-subtle: color-mix(in srgb, var(--color-accent-primary) 12%, transparent);
+  --color-accent-muted: color-mix(in srgb, var(--color-accent-primary) 38%, transparent);
+  --color-status-running-subtle: color-mix(in srgb, var(--color-status-running) 12%, transparent);
+  --color-status-success-subtle: color-mix(in srgb, var(--color-status-success) 12%, transparent);
+  --color-status-warning-subtle: color-mix(in srgb, var(--color-status-warning) 12%, transparent);
+  --color-status-failed-subtle: color-mix(in srgb, var(--color-status-failed) 12%, transparent);
+
+  /* 滚动条：唯一消费方是 styles.css 的滚动条皮肤（照抄 dsh ui-theme/styles/scrollbar.css）。
+     取值对齐 dsh 暗色的 neutral-700 / neutral-600（thumb / hover）；
+     hover 用 token 做 color-mix，不写死色值。 */
+  --color-scrollbar-thumb: var(--color-border-default);
+  --color-scrollbar-thumb-hover: color-mix(in srgb, var(--color-border-default) 55%, var(--color-text-tertiary));
+
+  /* 3D 图谱与 DAG 画布底（避免在 canvas 初始化里写死色值） */
+  --color-canvas-background: var(--color-surface-base);
+  --color-canvas-edge: var(--color-border-subtle);
+  --color-canvas-edge-highlight: var(--color-accent-primary);
+}
+
+/* ==========================================================================
+   浅色主题 · 与暗色同构：只覆盖颜色与阴影，不动尺度
+   触发：<html data-theme="light">
+   2026-09-24（D-31）：与暗色同步去蓝调（彩度归零），accent 同族锐化到 258°。
+   ========================================================================== */
+
+:root[data-theme='light'] {
+  color-scheme: light;
+
+  --color-surface-base: oklch(0.975 0 0); /* #F7F7F7 */
+  --color-surface-panel: oklch(0.99 0 0); /* #FCFCFC */
+  --color-surface-card: oklch(1 0 0); /* #FFFFFF */
+  --color-surface-raised: oklch(0.95 0 0); /* #EEEEEE */
+  --color-surface-overlay: oklch(1 0 0);
+  --color-surface-inset: oklch(0.96 0 0); /* #F2F2F2 */
+
+  --color-border-subtle: oklch(0.92 0 0); /* #E4E4E4 */
+  --color-border-default: oklch(0.87 0 0); /* #D4D4D4 */
+  /* 控件描边，须满足 WCAG 1.4.11 的 3:1。基准取最不利表面 surface-raised(#EEEEEE)，
+     不是窗口底——0.78 时对 base 有 1.84:1、对 raised 只有 1.70:1（U-01）。
+     0.62 是对 raised 3.09:1 的最小可行值（余量仅 3%）。
+     代价：与 border-default(0.87) 的明度差从 0.09 拉开到 0.25，浅色下分割感更重。 */
+  --color-border-strong: oklch(0.62 0 0); /* #868686 */
+
+  --color-text-primary: oklch(0.22 0 0); /* #1B1B1B */
+  --color-text-secondary: oklch(0.48 0 0); /* #5D5D5D */
+  /* 以下浅色值均由 WCAG ≥4.5:1 对「最不利表面」反解得到，MUST NOT 手改。
+     最不利表面是 surface-raised(#EEEEEE)——它比窗口底更暗，最吃对比度。
+     0.53 时对 raised 仅 4.49:1，故压到 0.527。 */
+  --color-text-tertiary: oklch(0.527 0 0); /* #6B6B6B */
+  --color-text-disabled: oklch(0.74 0 0);
+  --color-text-inverse: oklch(1 0 0);
+
+  /* accent 三态同步压深：0.548 对 raised 仅 4.17:1。
+     三档步长 0.06 / 0.05，仍可感知；色相与暗色同为 258°。 */
+  --color-accent-primary: oklch(0.53 0.19 258);
+  --color-accent-hover: oklch(0.47 0.2 258);
+  --color-accent-active: oklch(0.42 0.19 258);
+  --color-accent-on: oklch(1 0 0);
+
+  --color-status-running: oklch(0.527 0.115 195);
+  --color-status-success: oklch(0.534 0.14 150);
+  --color-status-warning: oklch(0.555 0.14 75);
+  --color-status-failed: oklch(0.55 0.19 25);
+  --color-status-info: oklch(0.53 0.19 258);
+  --color-status-pending: oklch(0.548 0 0);
+
+  --color-data-1: oklch(0.53 0.19 258);
+  --color-data-2: oklch(0.527 0.115 195);
+  --color-data-3: oklch(0.534 0.14 150);
+  --color-data-4: oklch(0.555 0.14 75);
+  --color-data-5: oklch(0.55 0.19 25);
+  --color-data-6: oklch(0.55 0.16 320);
+
+  --shadow-sm: 0 1px 2px rgb(16 24 40 / 6%);
+  --shadow-md: 0 8px 24px rgb(16 24 40 / 10%);
+  --shadow-lg: 0 14px 32px rgb(16 24 40 / 12%);
+  --shadow-xl: 0 16px 40px rgb(16 24 40 / 16%);
+
+  /* 滚动条：浅色对齐 dsh 的 neutral-200 / neutral-300（thumb / hover）。
+     **必须在这里重声明**——custom property 不跨主题继承，漏了就会沿用上面的暗色取值，
+     浅色主题会出现一条深色滚动条。 */
+  --color-scrollbar-thumb: var(--color-border-subtle);
+  --color-scrollbar-thumb-hover: var(--color-border-default);
+}

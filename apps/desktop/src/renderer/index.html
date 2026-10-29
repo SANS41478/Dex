@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self' ws://127.0.0.1:* ws://localhost:*"
+    />
+    <title>Dex</title>
+    <script>
+      // 首屏引导：在样式生效前定下 data-theme，避免浅色偏好下闪一帧暗色。
+      // 这段逻辑与 src/hooks/useTheme.ts 的 readPreference/resolveTheme 必须一致
+      // （内联脚本无法 import，只能同步维护；改动请看设计系统第 24 章）。
+      try {
+        const saved = localStorage.getItem('dex-theme')
+        const light = window.matchMedia('(prefers-color-scheme: light)').matches
+        document.documentElement.dataset.theme =
+          saved === 'light' || saved === 'dark' ? saved : light ? 'light' : 'dark'
+      } catch {
+        document.documentElement.dataset.theme = 'dark'
+      }
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

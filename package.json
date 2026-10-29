@@ -1,0 +1,35 @@
+{
+  "name": "@dexagent/root",
+  "version": "0.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node scripts/dev-port-check.mjs && pnpm build:host && pnpm --filter @dexagent/desktop dev",
+    "build": "pnpm -r build",
+    "build:host": "pnpm --filter @dexagent/bridges build",
+    "check": "pnpm lint && pnpm typecheck && pnpm test",
+    "lint": "biome check .",
+    "lint:fix": "biome check --write .",
+    "typecheck": "pnpm -r typecheck",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "shot": "node scripts/shot.mjs",
+    "bench:graph": "node scripts/bench-graph.mjs",
+    "tokens:export": "node scripts/export-tokens.mjs",
+    "tokens:hex": "node scripts/export-token-hex.mjs",
+    "tokens:contrast": "node scripts/export-contrast.mjs",
+    "icons:gen": "node scripts/gen-icons.mjs",
+    "brand:assets": "node scripts/gen-brand-assets.mjs",
+    "ds:build": "node scripts/export-token-hex.mjs && node scripts/export-contrast.mjs && node scripts/export-tokens.mjs && node scripts/gen-brand-assets.mjs"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.5.13",
+    "@playwright/test": "^1.63.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.0"
+  }
+}

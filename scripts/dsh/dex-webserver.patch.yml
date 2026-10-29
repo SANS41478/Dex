@@ -1,0 +1,8 @@
+# dex profile patch：官方 webserver（图谱侧信道的承载，M1-04b）。
+# 占位符由 main 渲染为具体端口后写入临时文件再经 --patch 传入。
+- insert:
+    - id: dex-webserver
+      name: '@deepseek-ai/dsh-host-webserver'
+      config:
+        host: '127.0.0.1'
+        port: DEX_GRAPH_PORT_PLACEHOLDER

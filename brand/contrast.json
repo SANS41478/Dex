@@ -1,0 +1,359 @@
+{
+  "generatedBy": "scripts/export-contrast.mjs",
+  "thresholds": {
+    "AA_TEXT": 4.5,
+    "AA_GRAPHIC": 3
+  },
+  "themes": {
+    "dark": {
+      "foregrounds": {
+        "color-text-primary": {
+          "cells": {
+            "base": 17.84,
+            "panel": 16.74,
+            "card": 16.16,
+            "raised": 14.34,
+            "inset": 18.37
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 14.34,
+            "grade": "text"
+          }
+        },
+        "color-text-secondary": {
+          "cells": {
+            "base": 7.94,
+            "panel": 7.45,
+            "card": 7.19,
+            "raised": 6.38,
+            "inset": 8.18
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 6.38,
+            "grade": "text"
+          }
+        },
+        "color-text-tertiary": {
+          "cells": {
+            "base": 5.66,
+            "panel": 5.31,
+            "card": 5.12,
+            "raised": 4.55,
+            "inset": 5.83
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.55,
+            "grade": "text"
+          }
+        },
+        "color-accent-primary": {
+          "cells": {
+            "base": 6.31,
+            "panel": 5.93,
+            "card": 5.72,
+            "raised": 5.07,
+            "inset": 6.5
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 5.07,
+            "grade": "text"
+          }
+        },
+        "color-status-running": {
+          "cells": {
+            "base": 8.51,
+            "panel": 7.98,
+            "card": 7.7,
+            "raised": 6.84,
+            "inset": 8.76
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 6.84,
+            "grade": "text"
+          }
+        },
+        "color-status-success": {
+          "cells": {
+            "base": 9.12,
+            "panel": 8.56,
+            "card": 8.26,
+            "raised": 7.33,
+            "inset": 9.39
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 7.33,
+            "grade": "text"
+          }
+        },
+        "color-status-warning": {
+          "cells": {
+            "base": 9.7,
+            "panel": 9.1,
+            "card": 8.78,
+            "raised": 7.79,
+            "inset": 9.98
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 7.79,
+            "grade": "text"
+          }
+        },
+        "color-status-failed": {
+          "cells": {
+            "base": 6.28,
+            "panel": 5.9,
+            "card": 5.69,
+            "raised": 5.05,
+            "inset": 6.47
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 5.05,
+            "grade": "text"
+          }
+        },
+        "color-status-pending": {
+          "cells": {
+            "base": 5.44,
+            "panel": 5.1,
+            "card": 4.92,
+            "raised": 4.37,
+            "inset": 5.6
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.37,
+            "grade": "graphic"
+          }
+        }
+      },
+      "onAccent": 6.31,
+      "borders": {
+        "subtle": {
+          "cells": {
+            "base": 1.26,
+            "panel": 1.18,
+            "card": 1.14,
+            "raised": 1.01,
+            "inset": 1.3
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 1.01
+          },
+          "needs3to1": false
+        },
+        "default": {
+          "cells": {
+            "base": 1.66,
+            "panel": 1.56,
+            "card": 1.51,
+            "raised": 1.34,
+            "inset": 1.71
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 1.34
+          },
+          "needs3to1": false
+        },
+        "strong": {
+          "cells": {
+            "base": 4.06,
+            "panel": 3.81,
+            "card": 3.67,
+            "raised": 3.26,
+            "inset": 4.18
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 3.26
+          },
+          "needs3to1": true
+        }
+      }
+    },
+    "light": {
+      "foregrounds": {
+        "color-text-primary": {
+          "cells": {
+            "base": 16.08,
+            "panel": 16.79,
+            "card": 17.22,
+            "raised": 14.85,
+            "inset": 15.39
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 14.85,
+            "grade": "text"
+          }
+        },
+        "color-text-secondary": {
+          "cells": {
+            "base": 6.15,
+            "panel": 6.42,
+            "card": 6.58,
+            "raised": 5.68,
+            "inset": 5.88
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 5.68,
+            "grade": "text"
+          }
+        },
+        "color-text-tertiary": {
+          "cells": {
+            "base": 4.97,
+            "panel": 5.19,
+            "card": 5.33,
+            "raised": 4.59,
+            "inset": 4.76
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.59,
+            "grade": "text"
+          }
+        },
+        "color-accent-primary": {
+          "cells": {
+            "base": 5.04,
+            "panel": 5.27,
+            "card": 5.4,
+            "raised": 4.66,
+            "inset": 4.83
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.66,
+            "grade": "text"
+          }
+        },
+        "color-status-running": {
+          "cells": {
+            "base": 4.57,
+            "panel": 4.77,
+            "card": 4.89,
+            "raised": 4.22,
+            "inset": 4.37
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.22,
+            "grade": "graphic"
+          }
+        },
+        "color-status-success": {
+          "cells": {
+            "base": 4.57,
+            "panel": 4.77,
+            "card": 4.89,
+            "raised": 4.22,
+            "inset": 4.37
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.22,
+            "grade": "graphic"
+          }
+        },
+        "color-status-warning": {
+          "cells": {
+            "base": 4.52,
+            "panel": 4.72,
+            "card": 4.84,
+            "raised": 4.17,
+            "inset": 4.32
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.17,
+            "grade": "graphic"
+          }
+        },
+        "color-status-failed": {
+          "cells": {
+            "base": 4.98,
+            "panel": 5.2,
+            "card": 5.33,
+            "raised": 4.6,
+            "inset": 4.76
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.6,
+            "grade": "text"
+          }
+        },
+        "color-status-pending": {
+          "cells": {
+            "base": 4.56,
+            "panel": 4.76,
+            "card": 4.88,
+            "raised": 4.21,
+            "inset": 4.36
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 4.21,
+            "grade": "graphic"
+          }
+        }
+      },
+      "onAccent": 5.4,
+      "borders": {
+        "subtle": {
+          "cells": {
+            "base": 1.19,
+            "panel": 1.24,
+            "card": 1.27,
+            "raised": 1.1,
+            "inset": 1.14
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 1.1
+          },
+          "needs3to1": false
+        },
+        "default": {
+          "cells": {
+            "base": 1.38,
+            "panel": 1.44,
+            "card": 1.48,
+            "raised": 1.28,
+            "inset": 1.32
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 1.28
+          },
+          "needs3to1": false
+        },
+        "strong": {
+          "cells": {
+            "base": 3.4,
+            "panel": 3.55,
+            "card": 3.64,
+            "raised": 3.14,
+            "inset": 3.25
+          },
+          "tightest": {
+            "on": "raised",
+            "ratio": 3.14
+          },
+          "needs3to1": true
+        }
+      }
+    }
+  }
+}

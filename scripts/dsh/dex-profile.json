@@ -1,0 +1,8 @@
+{
+  "profile": "dex",
+  "bundles": ["@deepseek-ai/dsh-base", "@deepseek-ai/dsh-sdk-app"],
+  "manifestName": "dsh-profile-dex",
+  "cordis": "[]\n",
+  "cordisPatch": "# dex profile 的用户补丁层（HMR live reload；演示/临时加插件用）。\n# 结构性插件（webserver、graph-bridge）由 main 生成的 --patch overlay 注入，不放这里。\n[]\n",
+  "pnpmWorkspace": "packages:\n  - .\n\nnodeLinker: hoisted\nautoInstallPeers: false\n"
+}

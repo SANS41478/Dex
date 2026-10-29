@@ -1,0 +1,27 @@
+node_modules/
+out/
+dist/
+coverage/
+release/
+.vite/
+.turbo/
+playwright-report/
+test-results/
+artifacts/
+*.log
+.env
+.env.*
+!.env.example
+*.local
+
+# 本机 dsh home / CLI 路径（由 scripts/setup-dsh-profile.mjs --bin 写入）
+.dex-dsh.local.json
+
+.DS_Store
+Thumbs.db
+
+# 工具链临时标记文件
+_tmp_*
+
+# electron-vite dev 每次启动生成的临时配置副本（带时间戳）
+apps/desktop/electron.vite.config.*.mjs

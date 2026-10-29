@@ -1,0 +1,37 @@
+# 工作区与会话控制面（照 dsh web-app bundle 的组合行）。
+#
+# 为什么需要（2026-10-07）：dex profile 原先是 `base + sdk-app`，没有挂
+# `@deepseek-ai/dsh-workspace` 与两个 controller，所以「重命名 / 归档 / 置顶 /
+# 工作区管理」在宿主里根本没有服务可调。这里把 web-app 里对应的三行搬进来：
+#
+# - `workspace`（dsh-workspace）：工作区登记表 + 归档/置顶会话集合（workspace 门域），
+#   并对外发 `workspace/session-activity` / `workspace/session-stop` 两个 waterfall
+#   事件（各 agent/subagent/job/schedule 插件据此回答"还有没有在跑的工作"）。
+# - `workspace-controller`（dsh-api-workspace-controller）：工作区命令面。
+#
+# **为什么不挂 session-controller**（2026-10-07 实测）：它的 inject 链里
+# `fileUploads` 由 `@deepseek-ai/dsh-client-file-upload` 提供，而后者又要
+# `connection`（web 传输）——在 `base + sdk-app` 的 dex profile 里会停在
+# `pending (waiting for service: connection)`。会话重命名改由桥接插件直接调
+# `sessionTitle.rename`（同样会写 `session/title` 事件、钉住用户标题）；
+# 归档门禁（ArchivedSessionGate）由桥接层在 prompt/resume 边界自行兜底。
+#
+# 注意：**新增**条目必须走 `insert:`（无 insert 的 patch 只做 id 覆盖，
+# 匹配不到会静默跳过）。
+
+# HMR 重新打开（UI-10a）：base bundle 依赖 `profileContext` 启用 hmr，
+# 但 sdk-app bundle 在我们这层之上把它覆写为 `disabled: true`（dsh 官方对
+# headless/sdk/acp 的默认）。本文件位于所有 bundle 与 profile 用户层之后，
+# 覆盖回来即可；宿主同时以 `--expose-internals` 启动（hmr 服务的硬前置）。
+# 作用：插件启用/禁用与配置变更热生效，无需重启宿主（插件管理 UI-10 的能力底座）。
+# 副作用（有意为之）：hmr 行由本覆盖层保活，应用内无法再把它禁用（会被本层
+# 覆盖，plugin-manager 会如实报告 overridden）。
+- id: hmr
+  disabled: false
+
+- insert:
+    - id: workspace
+      name: '@deepseek-ai/dsh-workspace'
+
+    - id: workspace-controller
+      name: '@deepseek-ai/dsh-api-workspace-controller'

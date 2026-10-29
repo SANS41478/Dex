@@ -1,0 +1,5 @@
+# dex profile patch：模型与凭据控制桥（M4-01）。
+- insert:
+    - id: dex-model-control
+      name: 'DEX_MODEL_CONTROL_BUNDLE_URL_PLACEHOLDER'
+      inject: [webServer]

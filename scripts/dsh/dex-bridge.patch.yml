@@ -1,0 +1,6 @@
+# dex profile patch：图谱桥入口插件（M1-04b）。
+# 占位符由 main 渲染为 bundle 的绝对 file:// URL 后写入临时文件再经 --patch 传入。
+- insert:
+    - id: dex-graph-bridge
+      name: 'DEX_BRIDGE_URL_PLACEHOLDER'
+      inject: [loader, webServer]

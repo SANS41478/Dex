@@ -1,0 +1,31 @@
+# M3-01 coding profile overlay.
+#
+# The base bundle already mounts the official file/search/pwsh/bash tools and
+# their sandbox/approval collaborators. This overlay only pins the product
+# default for a coding workspace; it does not replace or reimplement tools.
+
+- id: sandbox-policy
+  name: '@deepseek-ai/dsh-sandbox-policy'
+  config:
+    mode: !!js process.env.DEX_M3_SANDBOX_MODE ?? 'workspace-write'
+    workspaceRoot: !!js process.env.DEX_M3_WORKSPACE_ROOT ?? process.cwd()
+
+- id: approval
+  name: '@deepseek-ai/dsh-user-approval'
+  config:
+    policy: !!js process.env.DEX_M3_APPROVAL_POLICY ?? 'ask'
+
+- id: permission
+  name: '@deepseek-ai/dsh-permission-presets'
+  config:
+    presets:
+      read-only:
+        sandbox: read-only
+        approval: ask
+      workspace-write:
+        sandbox: workspace-write
+        approval: ask
+      danger-full-access:
+        sandbox: danger-full-access
+        approval: never
+    defaultPreset: workspace-write

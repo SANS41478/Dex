@@ -1,0 +1,6 @@
+# dex profile patch：trace 桥入口插件（M2-03，/dex-trace 侧信道）。
+# 占位符由 main 渲染为 bundle 的绝对 file:// URL 后写入临时文件再经 --patch 传入。
+- insert:
+    - id: dex-trace-bridge
+      name: 'DEX_TRACE_BUNDLE_URL_PLACEHOLDER'
+      inject: [loader, webServer, sessionProjections, sessions]
